@@ -22,4 +22,12 @@ public class MemoDTO {
         this.nickname = memo.getNickname();
         this.anonymous = memo.isAnonymous();
     }
+
+    public static Memo toEntity(final MemoDTO dto){
+        return Memo.builder()
+                .id(dto.getId())
+                .content(dto.getContent())
+                .nickname(dto.getNickname())
+                .build();
+    }
 }
