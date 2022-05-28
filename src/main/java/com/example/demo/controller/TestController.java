@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.RequestBodyDTO;
 import com.example.demo.dto.ResponseDTO;
+import com.example.demo.service.MemoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +13,9 @@ import java.util.List;
 @RestController
 @RequestMapping("test")
 public class TestController {
+
+    @Autowired
+    private MemoService memoService;
 
     @GetMapping
     public String testController(){
@@ -34,9 +39,11 @@ public class TestController {
 
     @GetMapping("testResponseBody")
     public ResponseDTO<String> testconVas(){
+        String str = memoService.testService();
         List<String> list = new ArrayList<>();
         list.add("안녕? 잘 지내?");
         list.add("별 일 없지? 나도 잘 지내.");
+        list.add(str);
         ResponseDTO<String> response = ResponseDTO.<String>builder().data(list).build();
         return response;
     }
