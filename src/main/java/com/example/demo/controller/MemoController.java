@@ -18,6 +18,8 @@ public class MemoController {
     @Autowired
     private MemoService memoService;
 
+    private static final String tmpUser = "tmp_user";
+
     @PostMapping
     public ResponseEntity<?> createMemo(@RequestBody MemoDTO dto){
         try {
@@ -42,9 +44,22 @@ public class MemoController {
 
     @GetMapping
     public ResponseEntity<?> retrieveMemoList(){
-        String tmpUser = "tmp_user";
-
         List<Memo> entities = memoService.retrieve(tmpUser);
+
+        List<MemoDTO> dtos = entities.stream().map(MemoDTO::new).collect(Collectors.toList());
+
+        ResponseDTO<MemoDTO> response = ResponseDTO.<MemoDTO>builder().data(dtos).build();
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateMemo(@RequestBody MemoDTO dto){
+        Memo memo = MemoDTO.toEntity(dto);
+
+        memo.setNickname(tmpUser);
+
+        List<Memo> entities = memoService.update(memo);
 
         List<MemoDTO> dtos = entities.stream().map(MemoDTO::new).collect(Collectors.toList());
 

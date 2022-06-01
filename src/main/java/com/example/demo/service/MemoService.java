@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -49,7 +50,22 @@ public class MemoService {
         }
     }
 
-    public List<Memo> retrieve(final String userId) {
-        return memoRepository.findByNickname(userId);
+    public List<Memo> retrieve(final String nickname) {
+        return memoRepository.findByNickname(nickname);
+    }
+
+    public List<Memo> update(final Memo entity) {
+        validate(entity);
+
+        final Optional<Memo> original = memoRepository.findById(entity.getId());
+
+        original.ifPresent(memo -> {
+            memo.setContent(entity.getContent());
+            memo.setAnonymous(entity.isAnonymous());
+
+            memoRepository.save(memo);
+        });
+
+        return retrieve(entity.getNickname());
     }
 }
