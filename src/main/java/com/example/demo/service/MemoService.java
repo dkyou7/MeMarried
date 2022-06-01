@@ -68,4 +68,17 @@ public class MemoService {
 
         return retrieve(entity.getNickname());
     }
+
+    public List<Memo> delete(final Memo entity) {
+        validate(entity);
+
+        try {
+            memoRepository.delete(entity);
+        }catch (Exception e){
+            log.error("Error deleting entity ", entity.getId(),e);
+
+            throw new RuntimeException("error deleting entity " + entity.getId());
+        }
+        return retrieve(entity.getNickname());
+    }
 }

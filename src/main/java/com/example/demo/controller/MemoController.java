@@ -68,4 +68,25 @@ public class MemoController {
         return ResponseEntity.ok().body(response);
     }
 
+    @DeleteMapping
+    public ResponseEntity<?> delete(@RequestBody MemoDTO dto){
+        try {
+            Memo entity = MemoDTO.toEntity(dto);
+
+            entity.setNickname(tmpUser);
+
+            List<Memo> entities = memoService.delete(entity);
+
+            List<MemoDTO> dtos = entities.stream().map(MemoDTO::new).collect(Collectors.toList());
+
+            ResponseDTO<MemoDTO> response = ResponseDTO.<MemoDTO>builder().data(dtos).build();
+
+            return ResponseEntity.ok().body(response);
+        }catch (Exception e){
+            String error = e.getMessage();
+            ResponseDTO<MemoDTO> response = ResponseDTO.<MemoDTO>builder().error(error).build();
+
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
 }
