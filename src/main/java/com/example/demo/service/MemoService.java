@@ -49,4 +49,7 @@ public class MemoService {
         }
     }
 
+    public List<Memo> retrieve(final String userId) {
+        return memoRepository.findByNickname(userId);
+    }
 }
