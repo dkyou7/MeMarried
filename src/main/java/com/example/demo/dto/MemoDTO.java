@@ -14,11 +14,13 @@ public class MemoDTO {
     private String id;
     private String content;
     private String nickname;
+    private String userId;
     private boolean anonymous;
 
     public MemoDTO(final Memo memo) {
         this.id = memo.getId();
         this.content = memo.getContent();
+        this.userId = memo.getUserId();
         this.nickname = memo.getNickname();
         this.anonymous = memo.isAnonymous();
     }
@@ -28,6 +30,7 @@ public class MemoDTO {
                 .id(dto.getId())
                 .content(dto.getContent())
                 .nickname(dto.getNickname())
+                .userId(dto.getUserId())
                 .build();
     }
 }

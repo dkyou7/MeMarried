@@ -23,6 +23,7 @@ public class Memo {
 
     private String phoneNumber;
     private String content;
+    private String userId;
     private boolean anonymous;
     private String nickname;
 }

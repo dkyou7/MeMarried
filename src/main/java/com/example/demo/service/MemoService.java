@@ -50,8 +50,8 @@ public class MemoService {
         }
     }
 
-    public List<Memo> retrieve(final String nickname) {
-        return memoRepository.findByNickname(nickname);
+    public List<Memo> retrieve(final String userId) {
+        return memoRepository.findByUserId(userId);
     }
 
     public List<Memo> update(final Memo entity) {

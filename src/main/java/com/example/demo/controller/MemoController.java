@@ -6,6 +6,7 @@ import com.example.demo.model.Memo;
 import com.example.demo.service.MemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,15 +19,15 @@ public class MemoController {
     @Autowired
     private MemoService memoService;
 
-    private static final String tmpUser = "tmp_user";
-
     @PostMapping
-    public ResponseEntity<?> createMemo(@RequestBody MemoDTO dto){
+    public ResponseEntity<?> createMemo(@AuthenticationPrincipal String userId,
+                                        @RequestBody MemoDTO dto){
         try {
 
             Memo memo = MemoDTO.toEntity(dto);
 
             memo.setId(null);
+            memo.setUserId(userId);
 
             List<Memo> entities = memoService.create(memo);
 
@@ -43,8 +44,8 @@ public class MemoController {
     }
 
     @GetMapping
-    public ResponseEntity<?> retrieveMemoList(){
-        List<Memo> entities = memoService.retrieve(tmpUser);
+    public ResponseEntity<?> retrieveMemoList(@AuthenticationPrincipal String userId){
+        List<Memo> entities = memoService.retrieve(userId);
 
         List<MemoDTO> dtos = entities.stream().map(MemoDTO::new).collect(Collectors.toList());
 
@@ -54,10 +55,11 @@ public class MemoController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateMemo(@RequestBody MemoDTO dto){
+    public ResponseEntity<?> updateMemo(@AuthenticationPrincipal String userId,
+                                        @RequestBody MemoDTO dto){
         Memo memo = MemoDTO.toEntity(dto);
 
-        memo.setNickname(tmpUser);
+        memo.setUserId(userId);
 
         List<Memo> entities = memoService.update(memo);
 
@@ -69,11 +71,12 @@ public class MemoController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> delete(@RequestBody MemoDTO dto){
+    public ResponseEntity<?> delete(@AuthenticationPrincipal String userId,
+                                    @RequestBody MemoDTO dto){
         try {
             Memo entity = MemoDTO.toEntity(dto);
 
-            entity.setNickname(tmpUser);
+            entity.setUserId(userId);
 
             List<Memo> entities = memoService.delete(entity);
 

@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface MemoRepository extends JpaRepository<Memo, String> {
     List<Memo> findByNickname(String userId);
+
+    List<Memo> findByUserId(String userId);
 }
