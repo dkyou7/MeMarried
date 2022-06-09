@@ -1,6 +1,9 @@
 server:
   port: 5000
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   jpa:
     database: mysql
     show-sql: true
